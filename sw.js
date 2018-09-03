@@ -1,44 +1,33 @@
 const CACHE_NAME = "CUCC_CACHE";
-let urls = [
-    "/ccuc/",
-    "/ccuc/offline.html",
-    "/ccuc/main.js",
-    "/ccuc/style.css"
-];
 
 self.addEventListener("install", function(event) {
     console.log("installing");
-    event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
-        return cache.addAll(urls);
+    let offline_request = new Request("offline.html");
+    event.waitUntil(fetch(offline_request).then(function(response) {
+        return caches.open(CACHE_NAME).then(function(cache) {
+            console.log("cachine offline page");
+            return cache.put(offline_request, response);
+        });
     }));
 });
 
 self.addEventListener("fetch", function(event) {
     console.log("fetching");
-    event.respondWith(caches.match(event.request).then(function(response) {
-        if (response) {
-            return response;
-        }
-
-        return fetch(event.request).catch(function(error) {
-            console.log("oof");
+    let request = event.request;
+    if (request.method === "GET") {
+        event.respondWith(fetch(request).catch(function(error) {
+            console.log("offline. serving offline page");
             return caches.open(CACHE_NAME).then(function(cache) {
                 return cache.match("offline.html");
             });
-        });
-    }));
+        }));
+    }
 });
 
 self.addEventListener("activate", function(event) {
-    console.log("activating");
-    var whitelist = [];
     event.waitUntil(caches.keys().then(function(cache_names) {
-        return Promise.all(
-            cache_names.map(function(cache_name) {
-                if (whitelist.indexOf(cache_name)) {
-                    return caches.delete(cache_name);
-                }
-            })
-        );
+        return Promise.all(cache_names.map(function(cache_name) {
+            caches.delete(cache_name);
+        }));
     }));
 });
