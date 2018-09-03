@@ -1,3 +1,11 @@
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/ccuc/sw.js").then(function(reg) {
+        console.log("registered service worker in scope: " reg.scope);
+    }, function(err) {
+        conole.log("failed to register service worker: ", err);
+    });
+}
+
 let contents = document.getElementById("contents");
 
 function ceiling(n) { return Math.ceil(n * 2) / 2 }
