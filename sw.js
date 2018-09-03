@@ -34,8 +34,6 @@ self.addEventListener("fetch", function(event) {
 
             return response;
         });
-});
-        return fetch(event.request);
     }));
 });
 
