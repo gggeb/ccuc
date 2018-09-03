@@ -1,6 +1,7 @@
 const CACHE_NAME = "CUCC_CACHE";
 let urls = [
     "/ccuc/",
+    "/ccuc/index.html",
     "/ccuc/main.js",
     "/ccuc/style.css"
 ];
