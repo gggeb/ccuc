@@ -1,0 +1,13 @@
+{
+  "name": "CCUC - Carb Counter and Unit Calculator",
+  "short_name": "CCUC",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "a tool for calulating units and logging carbs",
+  "icons": [{
+    "src": "icon.png",
+    "sizes": "32x32",
+    "type": "image/png"
+  }]
+}
