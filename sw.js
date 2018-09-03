@@ -19,7 +19,8 @@ self.addEventListener("fetch", function(event) {
         }
 
         return fetch(event.request).catch(function(error) {
-            return cache.open(CACHE_NAME).then(function(cache) {
+            console.log("oof");
+            return caches.open(CACHE_NAME).then(function(cache) {
                 return cache.match("offline.html");
             });
         });
