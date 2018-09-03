@@ -16,5 +16,14 @@ self.addEventListener("install", function(event) {
 });
 
 self.addEventListener("fetch", function(event) {
-    console.log("fetching");
+    event.respondWith(caches.match(event.request).then(function(r) {
+        console.log("fetching: ", event.request.url);
+        return r || fetch(event.request).then(function(response) {
+            return caches.open(CACHE_NAME).then(function(cache) {
+                console.log("caching new item: ", e.request.url);
+                cache.put(e.request, response.clone());
+                return response;
+            });
+        });
+    }));
 });
