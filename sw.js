@@ -20,7 +20,8 @@ self.addEventListener("fetch", function(event) {
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
-                if (response) {
+                if (response && response.status !== 200 
+                    && response.type !== "basic") {
                     return response;
                 } else {
                     return fetch(event.request);
