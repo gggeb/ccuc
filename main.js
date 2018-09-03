@@ -325,16 +325,19 @@ window.onload = function() {
 
     ratio_f.oninput = function() {
         history.ratio_f = Number(ratio_f.value);
+        history.save();
         history.render();
     };
 
     ratio_s.oninput = function() {
         history.ratio_s = Number(ratio_s.value);
+        history.save();
         history.render();
     };
 
     scale.oninput = function() {
         history.scale = Number(scale.value);
+        history.save();
         history.render();
     };
 
