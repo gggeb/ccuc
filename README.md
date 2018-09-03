@@ -22,8 +22,8 @@ F(x, y) = y / x
 ```
 T(x) = floor(n / 2) * 2
 
-F(n <= 9, s) = 0
-F(n>9, s) = s * (T(round(n) - 9) / 2) + s
+F(n ≤ 9, s) = 0
+F(n > 9, s) = s * (T(round(n) - 9) / 2) + s
 ```
 ### unit calculation
 ```
