@@ -1,0 +1,80 @@
+body {
+    padding-top: 1em;
+    padding-bottom: 4em;
+}
+
+#settings {
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+h4 {
+    margin: 0.5em;
+}
+
+table {
+    width: 90%;
+    margin: 5%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.delete_food {
+    width: 100%;
+}
+
+.delete_meal {
+    float: right;
+}
+
+#editing {
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#editing input {
+    display: block;
+    margin: 0 auto;
+    margin-bottom:1em;
+}
+
+#editing input[type=text] {
+    width: 80%;
+}
+
+#editing div {
+    padding: 0.5em;
+}
+
+#impexp {
+    text-align: center;
+    padding-top: 1em;
+}
+
+textarea {
+    width: 80%;
+    height: 8em;
+
+    resize: none;
+}
+
+@media screen and (min-width: 30em) {
+    body {
+        padding-left: calc((100% - 30em) / 2);
+        padding-right: calc((100% - 30em) / 2);
+    }
+}
+
+@media print {
+    #settings { display: none; }
+    #editing { display: none; }
+    #impexp { display: none; }
+
+    button { display: none; }
+    .delete_column { display: none; }
+
+    hr { display: none; }
+}
