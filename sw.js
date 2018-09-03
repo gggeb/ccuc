@@ -1,8 +1,8 @@
 const CACHE_NAME = "CUCC_CACHE";
 let urls = [
-    "/",
-    "main.js",
-    "style.css"
+    "/ccuc/",
+    "/ccuc/main.js",
+    "/ccuc/style.css"
 ];
 
 self.addEventListener("install", function(event) {
