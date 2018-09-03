@@ -14,14 +14,12 @@ self.addEventListener("install", function(event) {
 self.addEventListener("fetch", function(event) {
     console.log("fetching");
     let request = event.request;
-    if (request.method === "GET") {
-        event.respondWith(fetch(request).then(function(error) {
-            console.log("offline. serving offline page");
-            return caches.open(CACHE_NAME).then(function(cache) {
-                return cache.match("offline.html");
-            });
-        }));
-    }
+    event.respondWith(fetch(request).then(function(error) {
+        console.log("offline. serving offline page");
+        return caches.open(CACHE_NAME).then(function(cache) {
+            return cache.match("offline.html");
+        });
+    }));
 });
 
 self.addEventListener("activate", function(event) {
