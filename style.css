@@ -37,6 +37,34 @@ table, th, td {
     float: right;
 }
 
+#contents button {
+    background: white;
+    border: dashed 1px black;
+    padding: 1em;
+}
+
+#contents table button {
+    border-color: white;
+    padding: 0.5em;
+}
+
+#contents button:hover, #contents button:active {
+    color: red;
+    cursor: pointer;
+    border: dashed 1px red;
+}
+
+button {
+    background: white;
+    border: dashed 1px black;
+    padding: 1em;
+}
+
+button:hover, button:active {
+    border: solid 1px black;
+    cursor: pointer;
+}
+
 #editing {
     text-align: center;
     padding-top: 1em;
