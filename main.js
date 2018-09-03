@@ -239,6 +239,10 @@ window.onload = function() {
     let history = new History();
     history.render();
 
+    window.onunload = function() {
+        history.save();
+    };
+
     window.onbeforeunload = function() {
         history.save();
     };
