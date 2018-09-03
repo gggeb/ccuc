@@ -1,4 +1,4 @@
-const CACHE_NAME = "CUCC::V1"
+const CACHE_NAME = "CUCC::V2"
 const files = [
     "/ccuc/",
     "/ccuc/index.html",
