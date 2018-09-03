@@ -17,7 +17,7 @@ self.addEventListener("fetch", function(event) {
     event.respondWith(fetch(request).then(function(error) {
         console.log("offline. serving offline page");
         return caches.open(CACHE_NAME).then(function(cache) {
-            return cache.match("offline.html");
+            return cache.match("/ccuc/offline.html");
         });
     }));
 });
