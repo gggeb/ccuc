@@ -2,7 +2,7 @@ const CACHE_NAME = "CUCC_CACHE";
 
 self.addEventListener("install", function(event) {
     console.log("installing");
-    let offline_request = new Request("offline.html");
+    let offline_request = new Request("/ccuc/offline.html");
     event.waitUntil(fetch(offline_request).then(function(response) {
         return caches.open(CACHE_NAME).then(function(cache) {
             console.log("cachine offline page");
