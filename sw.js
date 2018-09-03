@@ -4,7 +4,7 @@ console.log = function(...items) {
     items.forEach((item, i) => {
         items[i] = (typeof item === 'object' ? JSON.stringify(item,null,4) : item);
     });
-    output.innerHTML += items.join(' ') + '<br />';
+    document.body.innerHTML += items.join(' ') + '<br />';
 };
 
 self.addEventListener("install", function(event) {
