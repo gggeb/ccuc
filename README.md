@@ -14,18 +14,18 @@ features
 mathmatics
 ----------
 
-###ratio calculation
+### ratio calculation
 ```
 F(x, y) = y / x
 ```
-###correction calculation
+### correction calculation
 ```
 T(x) = floor(n / 2) * 2
 
 F(n <= 9, s) = 0
 F(n>9, s) = s * (T(round(n) - 9) / 2) + s
 ```
-###unit calculation
+### unit calculation
 ```
 F(c, r) = c / r
 ```
