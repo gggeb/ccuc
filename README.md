@@ -11,7 +11,7 @@ features
 + saves to local storage
 + allows for importing and exporting of histories
 
-mathmatics
+mathematics
 ----------
 
 ### ratio calculation
