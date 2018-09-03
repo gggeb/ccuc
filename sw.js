@@ -5,7 +5,7 @@ self.addEventListener("install", function(event) {
     let offline_request = new Request("/ccuc/offline.html");
     event.waitUntil(fetch(offline_request).then(function(response) {
         return caches.open(CACHE_NAME).then(function(cache) {
-            console.log("cachine offline page");
+            console.log("cachine offline page: ", response);
             return cache.put(offline_request, response);
         });
     }));
