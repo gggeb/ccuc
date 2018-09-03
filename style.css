@@ -8,6 +8,14 @@ body {
     padding-bottom: 1em;
 }
 
+a {
+    color: black;
+    text-decoration: none;
+    font-style: italic;
+}
+
+a:visited, a:active, a:hover { color: black; }
+
 h4 {
     margin: 0.5em;
 }
