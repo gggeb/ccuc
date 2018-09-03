@@ -30,6 +30,11 @@ F(n>9, s) = s * (T(round(n) - 9) / 2) + s
 F(c, r) = c / r
 ```
 
+issues
+------
+in my experience, firefox mobile cannot save data to local storage.
+i would recommend using chrome or a chromium derivative for mobile use.
+
 misc
 ----
 
