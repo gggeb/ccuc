@@ -1,6 +1,6 @@
 const CACHE_NAME = "CUCC_CACHE";
 let urls = [
-    "index.html",
+    "/",
     "main.js",
     "style.css"
 ];
@@ -31,6 +31,7 @@ self.addEventListener("fetch", function(event) {
 
 self.addEventListener("activate", function(event) {
     var whitelist = [];
+    console.log("activating");
     event.waitUntil(
         caches.keys().then(function(cache_names) {
             return Promise.all(
