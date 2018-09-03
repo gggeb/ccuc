@@ -19,24 +19,9 @@ self.addEventListener("fetch", function(event) {
         console.log("fetching: ", event.request.clone());
         if (response) {
             return response;
-        } else {
-            let fetch_request = event.request.clone();
-
-            return fetch(fetch_request).then(function(response) {
-                if (!reponse || response.status !== 200 ||
-                    response.type !== "basic") {
-                    return response;
-                }
-
-                var response_to_cache = response.clone();
-
-                caches.open(CACHE_NAME).then(function(cache) {
-                    cache.put(event.request, response_to_cache);
-                });
-
-                return response;
-            });
         }
+
+        return fetch(event.request);
     }));
 });
 
