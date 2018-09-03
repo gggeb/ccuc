@@ -7,7 +7,7 @@
   "description": "a tool for calulating units and logging carbs",
   "icons": [{
     "src": "icon.png",
-    "sizes": "32x32 48x48 96x96 128x128 256x256",
+    "sizes": "32x32 48x48 96x96 128x128 192x192 256x256 512x512",
     "type": "image/png"
   }]
 }
