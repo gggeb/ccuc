@@ -238,6 +238,14 @@ class History {
 window.onload = function() {
     let history = new History();
     history.render();
+    
+    window.onunload = function() {
+        history.save();
+    };
+
+    window.onbeforeunload = function() {
+        history.save();
+    };
 
     let add_food_item = document.getElementById("add_food_item");
     let new_meal = document.getElementById("new_meal");
