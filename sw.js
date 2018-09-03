@@ -10,6 +10,8 @@ self.addEventListener("install", function(event) {
     console.log("installing service worker");
     event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
         return cache.addAll(files);
+    }).then(function() {
+        console.log("installation complete");
     }));
 });
 
