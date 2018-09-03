@@ -7,12 +7,14 @@ let urls = [
 ];
 
 self.addEventListener("install", function(event) {
+    console.log("installing");
     event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
         return cache.addAll(urls);
     }));
 });
 
 self.addEventListener("fetch", function(event) {
+    console.log("fetching");
     event.respondWith(caches.match(event.request).then(function(response) {
         if (response) {
             return response;
@@ -28,6 +30,7 @@ self.addEventListener("fetch", function(event) {
 });
 
 self.addEventListener("activate", function(event) {
+    console.log("activating");
     var whitelist = [];
     event.waitUntil(caches.keys().then(function(cache_names) {
         return Promise.all(
