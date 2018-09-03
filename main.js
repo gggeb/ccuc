@@ -239,14 +239,6 @@ window.onload = function() {
     let history = new History();
     history.render();
 
-    window.onunload = function() {
-        history.save();
-    };
-
-    window.onbeforeunload = function() {
-        history.save();
-    };
-
     let add_food_item = document.getElementById("add_food_item");
     let new_meal = document.getElementById("new_meal");
     
@@ -257,6 +249,7 @@ window.onload = function() {
                 let indexes = button.id.substring(2).split("_");
                 history.meals[Number(indexes[0])].food
                     .splice(Number(indexes[1]), 1);
+                history.save();
                 history.render();
                 register_delete_meals();
                 register_delete_food();
@@ -270,6 +263,7 @@ window.onload = function() {
             button.onclick = function() {
                 if (confirm("Are you sure you want to delete this meal?")) {
                     history.meals.splice(Number(button.id.substring(2)), 1);
+                    history.save();
                     history.render();
                     register_delete_meals();
                     register_delete_food();
@@ -288,6 +282,7 @@ window.onload = function() {
             if (name != "") {
                 history.meals[history.meals.length - 1]
                     .add_food(new Food(name, carbs));
+                history.save();
                 history.render();
                 register_delete_meals();
                 register_delete_food();
@@ -302,6 +297,7 @@ window.onload = function() {
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);
         history.add_meal(new Meal(level, []));
+        history.save();
         history.render();
         register_delete_meals();
         register_delete_food();
