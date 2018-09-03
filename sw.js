@@ -12,7 +12,7 @@ self.addEventListener("install", function(event) {
                 console.log("cache opened");
                 return cache.addAll(urls);
             }
-        );
+        )
     );
 });
 
