@@ -1,11 +1,3 @@
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").then(function(reg) {
-        
-    }).catch(function(err) {
-        console.log("failed to register service worker: ", err);
-    });
-}
-
 let contents = document.getElementById("contents");
 
 function ceiling(n) { return Math.ceil(n * 2) / 2 }
