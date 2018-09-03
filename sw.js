@@ -18,13 +18,26 @@ self.addEventListener("install", function(event) {
 
 self.addEventListener("fetch", function(event) {
     event.respondWith(
+        console.log("fetching: ", event.request.clone());
         caches.match(event.request)
             .then(function(response) {
-                if (response && response.status !== 200 
-                    && response.type !== "basic") {
+                if (response) {
                     return response;
                 } else {
-                    return fetch(event.request);
+                    let fetch_request = event.request.clone();
+
+                    return fetch(fetch_request).then(function(response) {
+                        if (!reponse || response.status !== 200 ||
+                            response.type !== "basic") {
+                            return response;
+                        }
+
+                        var response_to_cache = response.clone();
+
+                        caches.open(CACHE_NAME).then(function(cache) {
+                            cache.put(event.request, response_to_cache);
+                        });
+                    });
                 }
             })
     );
