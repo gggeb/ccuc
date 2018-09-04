@@ -46,7 +46,7 @@ class Food {
         delete_food.id = "df" + String(p_index) + "_" + String(index);
 
         delete_column.classList.add("delete_column");
-        delete_food.innerHTML = "X";
+        delete_food.innerHTML = "✖";
         delete_column.appendChild(delete_food);
 
         row.appendChild(name);
@@ -100,7 +100,7 @@ class Meal {
         delete_meal.classList.add("delete_meal");
         delete_meal.id = "dm" + String(index);
 
-        delete_meal.innerHTML = "X";
+        delete_meal.innerHTML = "✖";
 
         let time = document.createElement("span");
         let level = document.createElement("span");
@@ -257,6 +257,7 @@ window.onload = function() {
 
     let add_food_item = document.getElementById("add_food_item");
     let new_meal = document.getElementById("new_meal");
+    let utility_toggle = document.getElementById("toggle");
     
     let register_delete_food = function() {
         let buttons = document.getElementsByClassName("delete_food");
@@ -309,6 +310,41 @@ window.onload = function() {
             alert("No meals to add item to!");
         }
     };
+
+    utility_toggle.onclick = function() {
+        let utilities = document.getElementById("utilities");
+        let symbol = document.getElementById("symbol");
+        let carbs_input = document.getElementById("carbs");
+
+        if (utilities.style.display === "none") {
+            utilities.style.display = "block";
+            symbol.innerHTML = "↑";
+
+            carbs_input.readOnly = true;
+        } else {
+            utilities.style.display = "none";
+            symbol.innerHTML = "↓";
+            
+            carbs_input.readOnly = false;
+        }
+    };
+
+    let ohg = document.getElementById("original");
+    let mw = document.getElementById("weight");
+
+    let update_carbs = function() {
+        if (document.getElementById("utilities").style.display !== "none") {
+            let ohg_v = Number(ohg.value);
+            let mw_v = Number(mw.value);
+
+            let carbs_input = document.getElementById("carbs");
+
+            carbs_input.value = String(ohg_v * (mw_v / 100));
+        }
+    };
+
+    ohg.onchange = update_carbs;
+    mw.onchange = update_carbs;
 
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);

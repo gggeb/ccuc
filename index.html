@@ -32,6 +32,15 @@
         <div id="editing">
             <span>Name:</span>
             <input id="name" type="text">
+            <button id="toggle" type="button">
+                Carb Calculating Utilities <span id="symbol">↓</span>
+            </button>
+            <div id="utilities">
+                <span>Carbs in 100g (g):</span>
+                <input id="original" type="number" min="0" step="0.1">
+                <span>Meal Weight (g):</span>
+                <input id="weight" type="number" min="0" step="0.1">
+            </div>
             <span>Carbs (g):</span>
             <input id="carbs" type="number" min="0" step="0.1">
             <button id="add_food_item" type="button">Add Food Item</button>
