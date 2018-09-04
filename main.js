@@ -257,7 +257,7 @@ window.onload = function() {
 
     let add_food_item = document.getElementById("add_food_item");
     let new_meal = document.getElementById("new_meal");
-    let utility_toggle = document.getElementById("toggle");
+    let utility_toggle = document.getElementById("tcarbutils");
     
     let register_delete_food = function() {
         let buttons = document.getElementsByClassName("delete_food");
@@ -313,7 +313,7 @@ window.onload = function() {
 
     utility_toggle.onclick = function() {
         let utilities = document.getElementById("utilities");
-        let symbol = document.getElementById("symbol");
+        let symbol = document.getElementById("cuts");
         let carbs_input = document.getElementById("carbs");
 
         if (utilities.style.display !== "block") {
@@ -377,8 +377,22 @@ window.onload = function() {
         history.render();
     };
 
+    let impexp_toggle = document.getElementById("timpexp");
     let export_button = document.getElementById("export");
     let import_button = document.getElementById("import");
+
+    impexp_toggle.onclick = function() {
+        let impexp = document.getElementById("impexp");
+        let symbol = document.getElementById("impexpts");
+
+        if (impexp.style.display !== "block") {
+            impexp.style.display = "block";
+            symbol.innerHTML = "↑";
+        } else {
+            impexp.style.display = "none";
+            symbol.innerHTML = "↓";
+        }
+    };
 
     export_button.onclick = function() {
         let output = document.getElementById("output");

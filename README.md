@@ -35,6 +35,13 @@ issues
 in my experience, firefox mobile cannot save data to local storage.
 i would recommend using chrome or a chromium derivative for mobile use.
 
+to do
+-----
+
++ switch local storage to indexeddb
++ change storage type to be store meals per day
++ change importing and exporting to use files
+
 misc
 ----
 

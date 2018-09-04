@@ -96,14 +96,14 @@ button:hover, button:active {
     padding: 0.5em;
 }
 
-#toggle {
+.toggle {
     display: block;
     margin: 0 auto;
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
-#symbol {
+.symbol {
     border: dashed 1px black;
     padding: 0.5em;
     margin-left: 1em;
@@ -121,6 +121,7 @@ button:hover, button:active {
 #impexp {
     text-align: center;
     padding-top: 1em;
+    display: none;
 }
 
 textarea {
