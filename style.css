@@ -20,6 +20,13 @@ h4 {
     margin: 0.5em;
 }
 
+input {
+    height: 2em;
+}
+
+input:read-only { background-color: #efefef; }
+input:-moz-read-only { background-color:#efefef; }
+
 table {
     width: 90%;
     margin: 5%;
@@ -122,6 +129,9 @@ textarea {
 
     resize: none;
 }
+
+textarea:read-only { background-color: #efefef; }
+textarea:-moz-read-only { background-color:#efefef; }
 
 @media screen and (min-width: 30em) {
     body {
