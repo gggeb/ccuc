@@ -316,7 +316,7 @@ window.onload = function() {
         let symbol = document.getElementById("symbol");
         let carbs_input = document.getElementById("carbs");
 
-        if (utilities.style.display === "none") {
+        if (utilities.style.display !== "block") {
             utilities.style.display = "block";
             symbol.innerHTML = "↑";
 
