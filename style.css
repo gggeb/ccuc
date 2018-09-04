@@ -71,6 +71,10 @@ button:hover, button:active {
     padding-bottom: 1em;
 }
 
+#editing a {
+    margin: 1em;
+}
+
 #editing input {
     display: block;
     margin: 0 auto;
@@ -83,6 +87,28 @@ button:hover, button:active {
 
 #editing div {
     padding: 0.5em;
+}
+
+#toggle {
+    display: block;
+    margin: 0 auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#symbol {
+    border: dashed 1px black;
+    padding: 0.5em;
+    margin-left: 1em;
+}
+
+#utilities {
+    border: dashed 1px black;
+    margin: 0 auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 60%;
+    display: none;
 }
 
 #impexp {
