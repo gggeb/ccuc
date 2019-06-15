@@ -33,15 +33,19 @@
             <span>Name:</span>
             <input id="name" type="text">
             <button id="tcarbutils" class="toggle" type="button">
-                Carb Calculating Utilities
+                Calculating Utilities
                 <span id="cuts" class="symbol">↓</span>
             </button>
             <div id="utilities">
+                <span>Cals in 100g (kcal):</span>
+                <input id="originalcal" type="number" min="0" step="1">
                 <span>Carbs in 100g (g):</span>
-                <input id="original" type="number" min="0" step="0.1">
+                <input id="originalcarb" type="number" min="0" step="0.1">
                 <span>Meal Weight (g):</span>
                 <input id="weight" type="number" min="0" step="0.1">
             </div>
+            <span>Cals (kcal):</span>
+            <input id="cals" type="number" min="0" step="1">
             <span>Carbs (g):</span>
             <input id="carbs" type="number" min="0" step="0.1">
             <button id="add_food_item" type="button">Add Food Item</button>

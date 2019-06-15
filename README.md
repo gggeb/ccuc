@@ -6,6 +6,7 @@ a web tool for calculating units and logging meals.
 features
 --------
 
++ tracks calouries
 + calculates required corrections
 + allows x:y ratios
 + saves to local storage

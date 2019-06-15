@@ -2,13 +2,14 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/ccuc/sw.js").then(function(reg) {
         console.log("registered service worker in scope: ", reg.scope);
     }, function(err) {
-        conole.log("failed to register service worker: ", err);
+        console.log("failed to register service worker: ", err);
     });
 }
 
 let contents = document.getElementById("contents");
 
-function ceiling(n) { return Math.ceil(n * 2) / 2 }
+function round_to_half(n) { return Math.round(n * 2) / 2 }
+function round_to_place(n, e) { return Math.round(n * Math.pow(10, e)) / Math.pow(10, e) }
 function twos(n) { return Math.floor(n / 2) * 2 }
 function get_ratio(f, s) { return s / f }
 function get_correction(n, s) {
@@ -21,9 +22,10 @@ function get_correction(n, s) {
 }
 
 class Food {
-    constructor(name, carbs) {
+    constructor(name, carbs, cals) {
         this.name = name;
         this.carbs = carbs;
+        this.cals = cals;
     }
 
     rough_units(ratio) {
@@ -33,12 +35,14 @@ class Food {
     element(ratio, index, p_index) {
         let row = document.createElement("tr");
         let name = document.createElement("td");
+        let cals = document.createElement("td");
         let carbs = document.createElement("td");
         let units = document.createElement("td");
         let delete_column = document.createElement("td");
 
         name.innerHTML = this.name;
-        carbs.innerHTML = String(this.carbs) + "g";
+        cals.innerHTML = String(Math.round(this.cals)) + " kcal";
+        carbs.innerHTML = String(round_to_place(this.carbs, 1)) + "g";
         units.innerHTML = String(this.rough_units(ratio).toFixed(1));
 
         let delete_food = document.createElement("button");
@@ -50,6 +54,7 @@ class Food {
         delete_column.appendChild(delete_food);
 
         row.appendChild(name);
+        row.appendChild(cals);
         row.appendChild(carbs);
         row.appendChild(units);
         row.appendChild(delete_column);
@@ -59,19 +64,23 @@ class Food {
 }
 
 class Meal {
-    constructor(level, food) {
+    constructor(level, food, ratio, scale) {
         this.time = new Date().toLocaleTimeString();
         this.level = level;
+        this.ratio = ratio;
+        this.scale = scale;
         this.food = food;
     }
 
     copy(meal) {
         this.time = meal.time;
         this.level = meal.level;
+        this.ratio = meal.ratio;
+        this.scale = meal.scale;
         this.food = [];
 
         for (let food of meal.food) {
-            this.food.push(new Food(food.name, food.carbs));
+            this.food.push(new Food(food.name, food.carbs, food.cals));
         }
     }
 
@@ -81,19 +90,25 @@ class Meal {
             .reduce((acc, x) => acc + x);
     }
 
-    correction(scale) {
-        return get_correction(this.level, scale);
+    get total_cals() {
+        return this.food
+            .map((food) => food.cals)
+            .reduce((acc, x) => acc + x);
     }
 
-    units(ratio, scale) {
-        return ceiling(this.total_carbs / ratio + this.correction(scale));
+    get correction() {
+        return get_correction(this.level, this.scale);
+    }
+
+    get units() {
+        return round_to_half(this.total_carbs / this.ratio + this.correction);
     }
 
     add_food(food) {
         this.food.push(food);
     }
 
-    element(ratio, scale, index) {
+    element(index) {
         let meal = document.createElement("meal");
 
         let delete_meal = document.createElement("button");
@@ -104,27 +119,37 @@ class Meal {
 
         let time = document.createElement("span");
         let level = document.createElement("span");
+        let ratio = document.createElement("span");
+        let scale = document.createElement("span");
 
-        let spacer = 
         time.innerHTML = this.time + "<br />";
-        level.innerHTML = "Blood Sugar Level: " + String(this.level);
+        level.innerHTML = "Blood Sugar Level: " + String(this.level) + "<br />";
+        ratio.innerHTML = "Ratio: "
+                        + String(round_to_place(this.ratio, 2)) + "<br />";
+        scale.innerHTML = "Scale: "
+                        + String(round_to_place(this.scale, 1));
 
         meal.appendChild(delete_meal);
         meal.appendChild(time);
         meal.appendChild(level);
+        meal.appendChild(ratio);
+        meal.appendChild(scale);
 
         let table = document.createElement("table");
         let header_row = document.createElement("tr");
 
         let name_header = document.createElement("th");
+        let cals_header = document.createElement("th");
         let carbs_header = document.createElement("th");
         let units_header = document.createElement("th");
 
         name_header.innerHTML = "Name";
+        cals_header.innerHTML = "Cals";
         carbs_header.innerHTML = "Carbs";
         units_header.innerHTML = "Units";
 
         header_row.appendChild(name_header);
+        header_row.appendChild(cals_header);
         header_row.appendChild(carbs_header);
         header_row.appendChild(units_header);
 
@@ -132,10 +157,11 @@ class Meal {
 
         if (this.food.length > 0) {
             for (let i in this.food) {
-                table.appendChild(this.food[i].element(ratio, i, index));
+                table.appendChild(this.food[i].element(this.ratio, i, index));
             }
 
             let empty_row = document.createElement("tr");
+            empty_row.appendChild(document.createElement("td"));
             empty_row.appendChild(document.createElement("td"));
             empty_row.appendChild(document.createElement("td"));
             empty_row.appendChild(document.createElement("td"));
@@ -148,28 +174,32 @@ class Meal {
         let correction_units = document.createElement("td");
 
         correction_name.innerHTML = "Correction";
-        correction_units.innerHTML = String(this.correction(scale));
+        correction_units.innerHTML = String(this.correction);
 
         correction_row.appendChild(correction_name);
+        correction_row.appendChild(document.createElement("td"));
         correction_row.appendChild(document.createElement("td"));
         correction_row.appendChild(correction_units);
 
         let total_row = document.createElement("tr");
         let total_name = document.createElement("td");
+        let total_cals = document.createElement("td");
         let total_carbs = document.createElement("td");
         let total_units = document.createElement("td");
 
         total_name.innerHTML = "Total";
 
         if (this.food.length > 0) {
-            total_carbs.innerHTML = String(this.total_carbs) + "g";
-            total_units.innerHTML = String(this.units(ratio, scale));
+            total_cals.innerHTML = String(Math.round(this.total_cals)) + " kcal";
+            total_carbs.innerHTML = String(round_to_place(this.total_carbs, 1)) + "g";
+            total_units.innerHTML = String(this.units);
         } else {
-            total_carbs.innerHTML = "0g";
-            total_units.innerHTML = String(this.correction(scale));
+            total_carbs.innerHTML = "0g";3
+            total_units.innerHTML = String(this.correction);
         }
 
         total_row.appendChild(total_name);
+        total_row.appendChild(total_cals);
         total_row.appendChild(total_carbs);
         total_row.appendChild(total_units);
 
@@ -218,6 +248,10 @@ class History {
         }
     }
 
+    get ratio() {
+        return get_ratio(this.ratio_f, this.ratio_s);
+    }
+
     save() {
         localStorage.setItem("history", JSON.stringify(this));
     }
@@ -227,14 +261,12 @@ class History {
     }
 
     render() {
-        let ratio = get_ratio(this.ratio_f, this.ratio_s);
-
         while (contents.firstChild) {
             contents.removeChild(contents.firstChild);
         }
 
         for (let i in this.meals) {
-            contents.appendChild(this.meals[i].element(ratio, this.scale, i));
+            contents.appendChild(this.meals[i].element(i));
             contents.appendChild(document.createElement("hr"));
         }
         if (contents.lastChild) {
@@ -293,18 +325,23 @@ window.onload = function() {
 
     add_food_item.onclick = function() {
         let name = document.getElementById("name").value;
+        let cals = Number(document.getElementById("cals").value);
         let carbs = Number(document.getElementById("carbs").value);
         
         if (history.meals.length > 0) {
-            if (name != "") {
+            if (name != "" && cals > 0) {
                 history.meals[history.meals.length - 1]
-                    .add_food(new Food(name, carbs));
+                    .add_food(new Food(name, carbs, cals));
                 history.save();
                 history.render();
                 register_delete_meals();
                 register_delete_food();
             } else {
-                alert("Food item must have name!");
+                if (name == "") {
+                    alert("Food item must have name!");
+                } else {
+                    alert("Food must contain calouries!")
+                }
             }
         } else {
             alert("No meals to add item to!");
@@ -314,41 +351,49 @@ window.onload = function() {
     utility_toggle.onclick = function() {
         let utilities = document.getElementById("utilities");
         let symbol = document.getElementById("cuts");
+        let cals_input = document.getElementById("cals");
         let carbs_input = document.getElementById("carbs");
 
         if (utilities.style.display !== "block") {
             utilities.style.display = "block";
             symbol.innerHTML = "↑";
 
+            cals_input.readOnly = true;
             carbs_input.readOnly = true;
         } else {
             utilities.style.display = "none";
             symbol.innerHTML = "↓";
             
+            cals_input.readOnly = false;
             carbs_input.readOnly = false;
         }
     };
 
-    let ohg = document.getElementById("original");
+    let ohgcals = document.getElementById("originalcal");
+    let ohgcarbs = document.getElementById("originalcarb");
     let mw = document.getElementById("weight");
 
     let update_carbs = function() {
         if (document.getElementById("utilities").style.display !== "none") {
-            let ohg_v = Number(ohg.value);
+            let ohgcals_v = Number(ohgcals.value);
+            let ohgcarbs_v = Number(ohgcarbs.value);
             let mw_v = Number(mw.value);
 
+            let cals_input = document.getElementById("cals");
             let carbs_input = document.getElementById("carbs");
 
-            carbs_input.value = String(ohg_v * (mw_v / 100));
+            cals_input.value = String(ohgcals_v * (mw_v / 100));
+            carbs_input.value = String(ohgcarbs_v * (mw_v / 100));
         }
     };
 
-    ohg.onchange = update_carbs;
+    ohgcals.onchange = update_carbs;
+    ohgcarbs.onchange = update_carbs;
     mw.onchange = update_carbs;
 
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);
-        history.add_meal(new Meal(level, []));
+        history.add_meal(new Meal(level, [], history.ratio, history.scale));
         history.save();
         history.render();
         register_delete_meals();
