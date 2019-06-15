@@ -19,12 +19,12 @@ mathematics
 ```
 F(x, y) = y / x
 ```
+### correction ratio calculation
+F(x, y) = x / y
+
 ### correction calculation
 ```
-T(x) = floor(n / 2) * 2
-
-F(n ≤ 9, s) = 0
-F(n > 9, s) = s * (T(round(n) - 9) / 2) + s
+F(n, s) = (n - 7) * s
 ```
 ### unit calculation
 ```
