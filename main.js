@@ -12,10 +12,10 @@ function round_to_half(n) { return Math.round(n * 2) / 2 }
 function round_to_place(n, e) { return Math.round(n * Math.pow(10, e)) / Math.pow(10, e) }
 function twos(n) { return Math.floor(n / 2) * 2 }
 function get_ratio(f, s) { return s / f }
+function get_correction_ratio(f, s) { return f / s }
 function get_correction(n, s) {
-    if (n > 9) {
-        let r = Math.round(n);
-        return s * (twos(r - 9) / 2) + s;
+    if (n >= 7) {
+        return round_to_place((n - 7) * s, 1);
     } else {
         return 0;
     }
@@ -43,7 +43,7 @@ class Food {
         name.innerHTML = this.name;
         cals.innerHTML = String(Math.round(this.cals)) + " kcal";
         carbs.innerHTML = String(round_to_place(this.carbs, 1)) + "g";
-        units.innerHTML = String(this.rough_units(ratio).toFixed(1));
+        units.innerHTML = String(round_to_place(this.rough_units(ratio), 1));
 
         let delete_food = document.createElement("button");
         delete_food.classList.add("delete_food");
@@ -64,11 +64,11 @@ class Food {
 }
 
 class Meal {
-    constructor(level, food, ratio, scale) {
+    constructor(level, food, ratio, c_ratio) {
         this.time = new Date().toLocaleTimeString();
         this.level = level;
         this.ratio = ratio;
-        this.scale = scale;
+        this.c_ratio = c_ratio;
         this.food = food;
     }
 
@@ -76,7 +76,7 @@ class Meal {
         this.time = meal.time;
         this.level = meal.level;
         this.ratio = meal.ratio;
-        this.scale = meal.scale;
+        this.c_ratio = meal.c_ratio;
         this.food = [];
 
         for (let food of meal.food) {
@@ -97,7 +97,7 @@ class Meal {
     }
 
     get correction() {
-        return get_correction(this.level, this.scale);
+        return get_correction(this.level, this.c_ratio);
     }
 
     get units() {
@@ -120,20 +120,20 @@ class Meal {
         let time = document.createElement("span");
         let level = document.createElement("span");
         let ratio = document.createElement("span");
-        let scale = document.createElement("span");
+        let c_ratio = document.createElement("span");
 
         time.innerHTML = this.time + "<br />";
         level.innerHTML = "Blood Sugar Level: " + String(this.level) + "<br />";
         ratio.innerHTML = "Ratio: "
                         + String(round_to_place(this.ratio, 2)) + "<br />";
-        scale.innerHTML = "Scale: "
-                        + String(round_to_place(this.scale, 1));
+        c_ratio.innerHTML = "Correction ratio: "
+                        + String(round_to_place(this.c_ratio, 1));
 
         meal.appendChild(delete_meal);
         meal.appendChild(time);
         meal.appendChild(level);
         meal.appendChild(ratio);
-        meal.appendChild(scale);
+        meal.appendChild(c_ratio);
 
         let table = document.createElement("table");
         let header_row = document.createElement("tr");
@@ -166,7 +166,7 @@ class Meal {
             empty_row.appendChild(document.createElement("td"));
             empty_row.appendChild(document.createElement("td"));
         
-            table.appendChild(empty_row);
+            table.appendChild(empty_row); 
         }
 
         let correction_row = document.createElement("tr");
@@ -194,8 +194,8 @@ class Meal {
             total_carbs.innerHTML = String(round_to_place(this.total_carbs, 1)) + "g";
             total_units.innerHTML = String(this.units);
         } else {
-            total_carbs.innerHTML = "0g";3
-            total_units.innerHTML = String(this.correction);
+            total_carbs.innerHTML = "0g";
+            total_units.innerHTML = String(round_to_half(this.correction));
         }
 
         total_row.appendChild(total_name);
@@ -216,7 +216,8 @@ class History {
     constructor() {
         let ratio_f = document.getElementById("ratio_f");
         let ratio_s = document.getElementById("ratio_s");
-        let scale = document.getElementById("scale");1
+        let c_ratio_f = document.getElementById("c_ratio_f");
+        let c_ratio_s = document.getElementById("c_ratio_s");
 
         let raw = localStorage.getItem("history");
         if (raw != null && raw != "") {
@@ -225,12 +226,14 @@ class History {
             this.ratio_f = old.ratio_f;
             this.ratio_s = old.ratio_s;
 
-            this.scale = old.scale;
+            this.c_ratio_f = old.c_ratio_f;
+            this.c_ratio_s = old.c_ratio_s;
 
             ratio_f.value = old.ratio_f;
             ratio_s.value = old.ratio_s;
 
-            scale.value = old.scale;
+            c_ratio_f.value = old.c_ratio_f;
+            c_ratio_s.value = old.c_ratio_s;
 
             this.meals = [];
             for (let meal of old.meals) {
@@ -242,7 +245,8 @@ class History {
             this.ratio_f = Number(ratio_f.value);
             this.ratio_s = Number(ratio_s.value);
 
-            this.scale = Number(scale.value);
+            this.c_ratio_f = Number(c_ratio_f.value);
+            this.c_ratio_s = Number(c_ratio_s.value);
 
             this.meals = [];
         }
@@ -250,6 +254,10 @@ class History {
 
     get ratio() {
         return get_ratio(this.ratio_f, this.ratio_s);
+    }
+
+    get c_ratio() {
+        return get_correction_ratio(this.c_ratio_f, this.c_ratio_s);
     }
 
     save() {
@@ -394,7 +402,8 @@ window.onload = function() {
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);
         if (level != 0) {
-            history.add_meal(new Meal(level, [], history.ratio, history.scale));
+            console.log(history);
+            history.add_meal(new Meal(level, [], history.ratio, history.c_ratio));
             history.save();
             history.render();
             register_delete_meals();
@@ -406,7 +415,8 @@ window.onload = function() {
 
     let ratio_f = document.getElementById("ratio_f");
     let ratio_s = document.getElementById("ratio_s");
-    let scale = document.getElementById("scale");
+    let c_ratio_f = document.getElementById("c_ratio_f");
+    let c_ratio_s = document.getElementById("c_ratio_s");
 
     ratio_f.oninput = function() {
         history.ratio_f = Number(ratio_f.value);
@@ -419,9 +429,15 @@ window.onload = function() {
         history.save();
         history.render();
     };
+    
+    c_ratio_f.oninput = function() {
+        history.c_ratio_f = Number(c_ratio_f.value);
+        history.save();
+        history.render();
+    };
 
-    scale.oninput = function() {
-        history.scale = Number(scale.value);
+    c_ratio_s.oninput = function() {
+        history.c_ratio_s = Number(c_ratio_s.value);
         history.save();
         history.render();
     };
