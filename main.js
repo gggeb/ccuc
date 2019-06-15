@@ -393,11 +393,15 @@ window.onload = function() {
 
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);
-        history.add_meal(new Meal(level, [], history.ratio, history.scale));
-        history.save();
-        history.render();
-        register_delete_meals();
-        register_delete_food();
+        if (level != 0) {
+            history.add_meal(new Meal(level, [], history.ratio, history.scale));
+            history.save();
+            history.render();
+            register_delete_meals();
+            register_delete_food();
+        } else {
+            alert("Blood sugar level cannot be zero!");
+        }
     };
 
     let ratio_f = document.getElementById("ratio_f");
