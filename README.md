@@ -20,8 +20,9 @@ mathematics
 F(x, y) = y / x
 ```
 ### correction ratio calculation
+```
 F(x, y) = x / y
-
+```
 ### correction calculation
 ```
 F(n, s) = (n - 7) * s
