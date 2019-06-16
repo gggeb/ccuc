@@ -391,7 +391,7 @@ window.onload = function() {
             let carbs_input = document.getElementById("carbs");
 
             cals_input.value = String(Math.round(cals_val * (weight_val / 100)));
-            carbs_input.value = String(carbs_val * (weight_val / 100));
+            carbs_input.value = String(round_to_place(carbs_val * (weight_val / 100), 1));
         }
     };
 
