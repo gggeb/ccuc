@@ -30,6 +30,11 @@ h4 {
 
 input {
     height: 2em;
+
+    text-align: center;
+
+    padding: 0.25em 0.5em;
+    border: 3px double gray;
 }
 
 input:read-only { background-color: #efefef; }
@@ -69,8 +74,15 @@ table, th, td {
     border: dashed 1px red;
 }
 
+#contents button:active {
+    color: white;
+    background-color: red;
+}
+
 button {
     background: white;
+    color: black;
+
     border: dashed 1px black;
     padding: 1em;
 
@@ -86,6 +98,11 @@ button:hover, button:active {
     cursor: pointer;
 }
 
+button:active {
+    background-color: black;
+    color: white;
+}
+
 #editing {
     text-align: center;
     padding-top: 1em;
@@ -98,7 +115,7 @@ button:hover, button:active {
 
 #editing input {
     display: block;
-    margin: 0 auto;
+    margin: 0.5em auto 0 auto;
     margin-bottom:1em;
 }
 
@@ -143,6 +160,9 @@ textarea {
     height: 8em;
 
     resize: none;
+
+    border: 3px double gray;
+    padding: 1em;
 }
 
 textarea:read-only { background-color: #efefef; }
