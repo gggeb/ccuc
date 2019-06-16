@@ -384,7 +384,7 @@ window.onload = function() {
     let update_carbs = function() {
         if (document.getElementById("utilities").style.display !== "none") {
             let cals_val = Number(cals_in_hundred.value);
-            let carbS_val = Number(carbs_in_hundred.value);
+            let carbs_val = Number(carbs_in_hundred.value);
             let weight_val = Number(meal_weight.value);
 
             let cals_input = document.getElementById("cals");
