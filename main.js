@@ -22,10 +22,10 @@ function get_correction(n, s) {
 }
 
 class Food {
-    constructor(name, carbs, cals) {
+    constructor(name, cals, carbs) {
         this.name = name;
-        this.carbs = carbs;
         this.cals = cals;
+        this.carbs = carbs;
     }
 
     rough_units(ratio) {
@@ -80,19 +80,19 @@ class Meal {
         this.food = [];
 
         for (let food of meal.food) {
-            this.food.push(new Food(food.name, food.carbs, food.cals));
+            this.food.push(new Food(food.name, food.cals, food.carbs));
         }
-    }
-
-    get total_carbs() {
-        return this.food
-            .map((food) => food.carbs)
-            .reduce((acc, x) => acc + x);
     }
 
     get total_cals() {
         return this.food
             .map((food) => food.cals)
+            .reduce((acc, x) => acc + x);
+    }
+
+    get total_carbs() {
+        return this.food
+            .map((food) => food.carbs)
             .reduce((acc, x) => acc + x);
     }
 
@@ -123,7 +123,7 @@ class Meal {
         let c_ratio = document.createElement("span");
 
         time.innerHTML = this.time + "<br />";
-        level.innerHTML = "Blood Sugar Level: " + String(this.level) + "<br />";
+        level.innerHTML = "Blood Glucose Level: " + String(this.level) + "<br />";
         ratio.innerHTML = "Ratio: "
                         + String(round_to_place(this.ratio, 2)) + "<br />";
         c_ratio.innerHTML = "Correction ratio: "
@@ -377,27 +377,27 @@ window.onload = function() {
         }
     };
 
-    let ohgcals = document.getElementById("originalcal");
-    let ohgcarbs = document.getElementById("originalcarb");
-    let mw = document.getElementById("weight");
+    let cals_in_hundred = document.getElementById("cals_in_hundred");
+    let carbs_in_hundred = document.getElementById("carbs_in_hundred");
+    let meal_weight = document.getElementById("meal_weight");
 
     let update_carbs = function() {
         if (document.getElementById("utilities").style.display !== "none") {
-            let ohgcals_v = Number(ohgcals.value);
-            let ohgcarbs_v = Number(ohgcarbs.value);
-            let mw_v = Number(mw.value);
+            let cals_val = Number(cals_in_hundred.value);
+            let carbS_val = Number(carbs_in_hundred.value);
+            let weight_val = Number(meal_weight.value);
 
             let cals_input = document.getElementById("cals");
             let carbs_input = document.getElementById("carbs");
 
-            cals_input.value = String(ohgcals_v * (mw_v / 100));
-            carbs_input.value = String(ohgcarbs_v * (mw_v / 100));
+            cals_input.value = String(cals_val * (weight_val / 100));
+            carbs_input.value = String(carbs_val * (weight_val / 100));
         }
     };
 
-    ohgcals.onchange = update_carbs;
-    ohgcarbs.onchange = update_carbs;
-    mw.onchange = update_carbs;
+    cals_in_hundred.onchange = update_carbs;
+    carbs_in_hundred.onchange = update_carbs;
+    meal_weight.onchange = update_carbs;
 
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);
@@ -409,7 +409,7 @@ window.onload = function() {
             register_delete_meals();
             register_delete_food();
         } else {
-            alert("Blood sugar level cannot be zero!");
+            alert("Blood glucose level cannot be zero!");
         }
     };
 
