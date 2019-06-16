@@ -390,7 +390,7 @@ window.onload = function() {
             let cals_input = document.getElementById("cals");
             let carbs_input = document.getElementById("carbs");
 
-            cals_input.value = String(cals_val * (weight_val / 100));
+            cals_input.value = String(Math.round(cals_val * (weight_val / 100)));
             carbs_input.value = String(carbs_val * (weight_val / 100));
         }
     };
@@ -401,15 +401,20 @@ window.onload = function() {
 
     new_meal.onclick = function() {
         let level = Number(document.getElementById("level").value);
-        if (level != 0) {
-            console.log(history);
+        if (level != 0 && history.ratio > 0 && history.c_ratio > 0) {
             history.add_meal(new Meal(level, [], history.ratio, history.c_ratio));
             history.save();
             history.render();
             register_delete_meals();
             register_delete_food();
         } else {
-            alert("Blood glucose level cannot be zero!");
+            if (history.ratio <= 0 || isNaN(history.ratio)) {
+                alert("Ratio cannot be equal or less than zero!");
+            } else if (history.c_ratio <= 0 || isNaN(history.c_ratio)) {
+                alert("Correction ratio cannot be equal or less than zero!");
+            } else {
+                alert("Blood glucose level cannot be zero!");
+            }
         }
     };
 
