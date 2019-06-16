@@ -20,8 +20,8 @@ self.addEventListener("fetch", function(event) {
         console.log("fetching: ", event.request.url);
         return r || fetch(event.request).then(function(response) {
             return caches.open(CACHE_NAME).then(function(cache) {
-                console.log("caching new item: ", e.request.url);
-                cache.put(e.request, response.clone());
+                console.log("caching new item: ", event.request.url);
+                cache.put(event.request, response.clone());
                 return response;
             });
         });
