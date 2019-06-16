@@ -339,7 +339,7 @@ window.onload = function() {
         if (history.meals.length > 0) {
             if (name != "" && cals > 0) {
                 history.meals[history.meals.length - 1]
-                    .add_food(new Food(name, carbs, cals));
+                    .add_food(new Food(name, cals, carbs));
                 history.save();
                 history.render();
                 register_delete_meals();
