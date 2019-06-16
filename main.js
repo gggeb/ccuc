@@ -332,9 +332,13 @@ window.onload = function() {
     register_delete_food();
 
     add_food_item.onclick = function() {
-        let name = document.getElementById("name").value;
-        let cals = Number(document.getElementById("cals").value);
-        let carbs = Number(document.getElementById("carbs").value);
+        let name_element = document.getElementById("name");
+        let cals_element = document.getElementById("cals");
+        let carbs_element = document.getElementById("carbs");
+        
+        let name = name_element.value;
+        let cals = Number(cals_element.value);
+        let carbs = Number(carbs_element.value);
         
         if (history.meals.length > 0) {
             if (name != "" && cals > 0) {
@@ -344,6 +348,14 @@ window.onload = function() {
                 history.render();
                 register_delete_meals();
                 register_delete_food();
+
+                name_element.value = "";
+                cals_element.value = "";
+                carbs_element.value = "";
+
+                document.getElementById("carbs_in_hundred").value = "";
+                document.getElementById("cals_in_hundred").value = "";
+                document.getElementById("food_weight").value = "";
             } else {
                 if (name == "") {
                     alert("Food item must have name!");
@@ -379,13 +391,13 @@ window.onload = function() {
 
     let cals_in_hundred = document.getElementById("cals_in_hundred");
     let carbs_in_hundred = document.getElementById("carbs_in_hundred");
-    let meal_weight = document.getElementById("meal_weight");
+    let food_weight = document.getElementById("food_weight");
 
     let update_carbs = function() {
         if (document.getElementById("utilities").style.display !== "none") {
             let cals_val = Number(cals_in_hundred.value);
             let carbs_val = Number(carbs_in_hundred.value);
-            let weight_val = Number(meal_weight.value);
+            let weight_val = Number(food_weight.value);
 
             let cals_input = document.getElementById("cals");
             let carbs_input = document.getElementById("carbs");
@@ -397,16 +409,19 @@ window.onload = function() {
 
     cals_in_hundred.onchange = update_carbs;
     carbs_in_hundred.onchange = update_carbs;
-    meal_weight.onchange = update_carbs;
+    food_weight.onchange = update_carbs;
 
     new_meal.onclick = function() {
-        let level = Number(document.getElementById("level").value);
+        let level_element = document.getElementById("level");
+        let level = Number(level_element.value);
         if (level != 0 && history.ratio > 0 && history.c_ratio > 0) {
             history.add_meal(new Meal(level, [], history.ratio, history.c_ratio));
             history.save();
             history.render();
             register_delete_meals();
             register_delete_food();
+
+            level_element.value = "";
         } else {
             if (history.ratio <= 0 || isNaN(history.ratio)) {
                 alert("Ratio cannot be equal or less than zero!");
