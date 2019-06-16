@@ -175,7 +175,7 @@ textarea:-moz-read-only { background-color:#efefef; }
 .dialogue_box {
     position: absolute;
 
-    width: 90%;
+    width: 70%;
 
     top: 50%;
     left: 50%;
