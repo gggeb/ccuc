@@ -22,12 +22,17 @@ function get_correction(n, s) {
 }
 
 function notify(message) {
+    document.documentElement.style.overflow = "hidden";
+
     document.getElementById("alert_message").innerHTML = message;
     document.getElementById("alert").style.display = "block";
 }
 
 function check(message, ok_callback, cancel_callback) {
+    document.documentElement.style.overflow = "hidden";
+    
     document.getElementById("confirm_message").innerHTML = message;
+
     document.getElementById("confirm").style.display = "block";
 
     document.getElementById("ok").addEventListener("click", ok_callback);
@@ -310,6 +315,7 @@ window.onload = function() {
 
     for (element of document.getElementsByClassName("close_dialogue")) {
         element.addEventListener("click", function() {
+            document.documentElement.style.overflow = "auto";
             this.parentElement.parentElement.style.display = "none";
         });
     }
