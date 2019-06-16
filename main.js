@@ -21,6 +21,19 @@ function get_correction(n, s) {
     }
 }
 
+function notify(message) {
+    document.getElementById("alert_message").innerHTML = message;
+    document.getElementById("alert").style.display = "block";
+}
+
+function check(message, ok_callback, cancel_callback) {
+    document.getElementById("confirm_message").innerHTML = message;
+    document.getElementById("confirm").style.display = "block";
+
+    document.getElementById("ok").addEventListener("click", ok_callback);
+    document.getElementById("cancel").addEventListener("click", cancel_callback);
+}
+
 class Food {
     constructor(name, cals, carbs) {
         this.name = name;
@@ -295,6 +308,12 @@ window.onload = function() {
         history.save();
     };
 
+    for (element of document.getElementsByClassName("close_dialogue")) {
+        element.addEventListener("click", function() {
+            this.parentElement.parentElement.style.display = "none";
+        });
+    }
+
     let add_food_item = document.getElementById("add_food_item");
     let new_meal = document.getElementById("new_meal");
     let utility_toggle = document.getElementById("tcarbutils");
@@ -318,13 +337,13 @@ window.onload = function() {
         let buttons = document.getElementsByClassName("delete_meal");
         for (let button of buttons) {
             button.onclick = function() {
-                if (confirm("Are you sure you want to delete this meal?")) {
+                check("Are you sure you want to delete this meal?", function() {
                     history.meals.splice(Number(button.id.substring(2)), 1);
                     history.save();
                     history.render();
                     register_delete_meals();
                     register_delete_food();
-                }
+                });
             };
         }
     };
@@ -358,13 +377,13 @@ window.onload = function() {
                 document.getElementById("food_weight").value = "";
             } else {
                 if (name == "") {
-                    alert("Food item must have name!");
+                    notify("Food item must have name!");
                 } else {
-                    alert("Food must contain calouries!")
+                    notify("Food must contain calouries!")
                 }
             }
         } else {
-            alert("No meals to add item to!");
+            notify("No meals to add item to!");
         }
     };
 
@@ -424,11 +443,11 @@ window.onload = function() {
             level_element.value = "";
         } else {
             if (history.ratio <= 0 || isNaN(history.ratio)) {
-                alert("Ratio cannot be equal or less than zero!");
+                notify("Ratio cannot be equal or less than zero!");
             } else if (history.c_ratio <= 0 || isNaN(history.c_ratio)) {
-                alert("Correction ratio cannot be equal or less than zero!");
+                notify("Correction ratio cannot be equal or less than zero!");
             } else {
-                alert("Blood glucose level cannot be zero!");
+                notify("Blood glucose level cannot be zero!");
             }
         }
     };
@@ -485,11 +504,11 @@ window.onload = function() {
     };
 
     import_button.onclick = function() {
-        if (confirm("Are you sure you want to load this data?")) {
+        check("Are you sure you want to load this data?", function() {
             let input = document.getElementById("input").value;
             localStorage.setItem("history", input);
             history = new History();
             history.render();
-        }
+        });
     };
 }
