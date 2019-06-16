@@ -210,6 +210,7 @@ textarea:-moz-read-only { background-color:#efefef; }
 @media print {
     #settings { display: none; }
     #editing { display: none; }
+    #timpexp { display: none; }
     #impexp { display: none; }
 
     button { display: none; }
